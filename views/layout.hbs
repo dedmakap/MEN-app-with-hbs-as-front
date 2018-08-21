@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    {{#each css}}
+        <link rel="stylesheet" href="/stylesheets/{{this}}" />
+    {{/each}}    
+    <script src="javascripts/libs/jquery-3.3.1.min.js"></script>
+    <script src="javascripts/libs/bootstrap.min.js"></script>
+  </head>
+  <body>
+    {{{body}}}
+  </body>
+</html>
