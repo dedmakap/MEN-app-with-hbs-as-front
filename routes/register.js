@@ -9,10 +9,6 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     console.log(req.body);
-    // if (User.find({email: req.body.email })) {
-    //     console.log('already exists!');
-    //     return res.redirect('/register')
-    // }
     
     var user = new User({
         firstName : req.body.name,
@@ -20,6 +16,9 @@ router.post('/', (req, res) => {
         userName : req.body.username,
         password : req.body.password
     })
+    if (req.body.email === 'mylnikovdma@gmail.com') {
+        user.role = 'admin'
+    }
     user.save((err) => {
         if (err) {
             return res.render('register', {title: 'Registration page', existingEmail: true, css: ['register.css']})

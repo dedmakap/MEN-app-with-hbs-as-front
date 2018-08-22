@@ -22,9 +22,9 @@ router.post('/', (req, res) => {
                 noSuchEmail: true
             })
         }
-        console.log(pass, user);
         if (user.password === pass) {
-            var token = jwt.sign(user.firstName, 'secret');
+            var token = jwt.sign(user.email, 'secret');
+            console.log(user.email);
             res.cookie('token', token);
             return res.redirect('/')
         }

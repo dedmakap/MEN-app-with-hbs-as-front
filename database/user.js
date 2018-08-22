@@ -8,7 +8,11 @@ var userScheme = new Schema({
         unique: true
     },
     userName : String,
-    password : String
+    password : String,
+    role : {
+        type: String,
+        default: 'user'
+    }
 });
 
 var User = mongoose.model("User", userScheme);
