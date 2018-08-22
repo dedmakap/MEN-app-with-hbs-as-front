@@ -10,15 +10,17 @@ router.get('/', (req, res) => {
         var token = req.cookies.token;
         var email = jwt.verify(token, 'secret'); 
         var user;
+        var isAdmin = false;
         User.findOne({ email: email }, function (err, data) {
             if (err) return console.log(err);
-            console.log(data.firstName);
             user = data.firstName;
-            res.render('jumbo',{ user: user, title: 'MyApp', css: ['jumbo.css'] });
+            if (data.role === 'admin') isAdmin = true;
+            res.render('jumbo',{ user: user, isAdmin: isAdmin, title: 'MyApp', css: ['jumbo.css'] });
         })
     }
+    else
+    res.render('jumbo',{ title: 'MyApp', css: ['jumbo.css'] });
     
-    res.render('jumbo',{ user: user, title: 'MyApp', css: ['jumbo.css'] });
 })
 
 module.exports = router;
