@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var signinRouter = require('./routes/sign-in');
 var jumboRouter = require('./routes/jumbo');
 var regRouter = require('./routes/register');
+var signoutRouter = require('./routes/signout');
 
 var app = express();
 var connect = require('./database/index').connectToDb;
@@ -29,6 +30,7 @@ app.use('/users', usersRouter);
 app.use('/signin', signinRouter);
 app.use('/jumbo', jumboRouter);
 app.use('/register',regRouter);
+app.use('/signout',signoutRouter);
 
 
 // catch 404 and forward to error handler
