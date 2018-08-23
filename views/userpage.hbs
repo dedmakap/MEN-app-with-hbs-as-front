@@ -2,7 +2,11 @@
 <p>Welcome, {{firstname}}!</p>
 <content>
     <div class="profile-pic">
-        <img src="../images/avatarPlaceholder.png" alt="Your profile pic" />
+        <img src="../images/{{id}}.png" alt="Your profile pic" />
+        <form action="/users/{{id}}" enctype="multipart/form-data" method="POST" class="pic-form">
+        <input type="file" name="file">
+        <input type="submit" value="Change the avatar">
+        </form>
     </div>
     <div class="data-table">
         <table class="table table-condensed table-striped table-bordered">
