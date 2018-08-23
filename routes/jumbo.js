@@ -3,7 +3,6 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require('../database/user') 
 
-//GET sign in page.
 
 router.get('/', (req, res) => {
     if (req.cookies.token) {

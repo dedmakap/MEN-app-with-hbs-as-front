@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+var userpageRouter = require('./routes/userpage');
 var usersRouter = require('./routes/users');
 var signinRouter = require('./routes/sign-in');
 var jumboRouter = require('./routes/jumbo');
@@ -31,6 +31,7 @@ app.use('/signin', signinRouter);
 app.use('/jumbo', jumboRouter);
 app.use('/register',regRouter);
 app.use('/signout',signoutRouter);
+app.use('/users/', userpageRouter);
 
 
 // catch 404 and forward to error handler
