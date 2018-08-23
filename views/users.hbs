@@ -1,0 +1,10 @@
+
+    <h2>Список пользователей</h2>
+    <table class="table table-condensed table-striped table-bordered">
+        <thead><tr><th>Id</th><th>Name</th><th>Email</th><th>Username</th><th>Role</th></tr></thead>
+        <tbody>
+                {{#each people}}
+     <tr><td><a href="#">{{this._id}}</a></td><td>{{this.firstName}}</td><td>{{this.email}}</td><td>{{this.userName}}</td><td>{{this.role}}</td></tr>
+    {{/each}}
+        </tbody>
+    </table>
