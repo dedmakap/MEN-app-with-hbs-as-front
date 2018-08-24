@@ -25,7 +25,15 @@ function checkGuestRole(req, res, next) {
 
 router.get('/:id', checkGuestRole, function (req, res, next) {
   var id = req.params['id'];
+  var avaPath = path.join(__dirname, "../public/images/");
+  var avaFile;
   User.findOne({ _id: id }, function (err, owner) {
+    if (fs.existsSync(avaPath + owner.avatar)) {
+      avaFile = owner.avatar;
+    }
+    else {
+      avaFile = '';
+    }
     res.render('userpage', {
       title: "User's profile page",
       firstname: owner.firstName,
@@ -33,6 +41,7 @@ router.get('/:id', checkGuestRole, function (req, res, next) {
       username: owner.userName,
       role: owner.role,
       id: owner._id,
+      avatar: avaFile,
       css: ['userpage.css']
     });
   })
@@ -41,25 +50,16 @@ router.get('/:id', checkGuestRole, function (req, res, next) {
 
 router.post('/:id',  upload.single('file'), function (req, res, next) {
   //console.log(req);
+  if (!req.file) res.redirect('/users/'+req.params['id']);
+  //console.log(req.file);
   const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, "../public/images/" + req.params['id'] +".png");
-
-  if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-    fs.rename(tempPath, targetPath, err => {
-      if (err) throw (err)
-
-      res.redirect('/users/'+req.params['id']);
-      });
-    } else {
-      fs.unlink(tempPath, err => {
-        if (err) throw (err);
-
-        res
-          .status(403)
-          .contentType("text/plain")
-          .end("Only .png files are allowed!");
-      });
-    } 
+  const targetPath = path.join(__dirname, "../public/images/");
+  User.findOne({ _id: req.params['id'] }, function (err, data) {
+    if (err) throw (err)
+    data.avatar = req.file.filename;
+    data.save();
+  })
+  res.redirect('/users/'+req.params['id']);
 })
 
 module.exports = router;

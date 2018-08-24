@@ -2,7 +2,11 @@
 <p>Welcome, {{firstname}}!</p>
 <content>
     <div class="profile-pic">
-        <img src="../images/{{id}}.png" alt="Your profile pic" />
+        {{#if avatar}}
+        <img src="../images/{{avatar}}" alt="Your profile pic" />
+        {{else}}
+          <img src="../images/avatarPlaceholder.png" alt="Your profile pic" />
+          {{/if}}
         <form action="/users/{{id}}" enctype="multipart/form-data" method="POST" class="pic-form">
         <input type="file" name="file">
         <input type="submit" value="Change the avatar">

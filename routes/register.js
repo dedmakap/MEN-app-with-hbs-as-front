@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../database/user') 
+var User = require('../database/user');
 
 //GET register page.
 router.get('/', (req, res) => {

@@ -12,7 +12,10 @@ var userScheme = new Schema({
     role : {
         type: String,
         default: 'user'
-    }
+    },
+    avatar : {
+        type : String,
+    } 
 });
 
 var User = mongoose.model("User", userScheme);
