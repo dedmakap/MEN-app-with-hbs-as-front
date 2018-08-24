@@ -12,24 +12,25 @@
         <input type="submit" value="Change the avatar">
         </form>
     </div>
-    <div class="data-table">
+    <div class="data-table" data-userid="{{id}}">
         <table class="table table-condensed table-striped table-bordered">
             <tr>
                 <td>Your real name:</td>
-                <td>{{firstname}}</td>
+                <td><div contenteditable="true" id="firstname-tab">{{firstname}}</div></td>
             </tr>
             <tr>
                 <td>Your email:</td>
-                <td>{{email}}</td>
+                <td><div contenteditable="true" id="email-tab">{{email}}</div></td>
             </tr>
             <tr>
                 <td>Your username:</td>
-                <td>{{username}} </td>
+                <td><div contenteditable="true" id="username-tab">{{username}}</div></td>
             </tr>
             <tr>
                 <td>Your role:</td>
-                <td>{{role}}</td>
+                <td><div contenteditable="true" id="role-tab">{{role}}</div></td>
             </tr>
         </table>
     </div>
+<script src="../javascripts/userpagemodifier.js"></script>
 </content>

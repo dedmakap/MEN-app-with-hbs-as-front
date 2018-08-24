@@ -58,8 +58,35 @@ router.post('/:id',  upload.single('file'), function (req, res, next) {
     if (err) throw (err)
     data.avatar = req.file.filename;
     data.save();
+    res.redirect('/users/'+req.params['id']);
   })
-  res.redirect('/users/'+req.params['id']);
 })
+
+router.put('/:id', function (req, res) {
+    console.log(req.body.key);
+    var key;
+    switch (req.body.key) {
+      case 'firstname-tab':
+      key = 'firstName'
+        break;
+      case 'email-tab':
+      key = 'email'
+        break;
+      case 'username-tab':
+      key = 'userName'
+        break;
+      case 'role-tab':
+      key = 'role'
+       break;
+      default:
+        break;
+    }
+    var data = req.body.data;
+    User.findOneAndUpdate({ _id: req.params['id'] }, { [key] : data}, function (err, user) {
+      if (err) throw (err)
+      res.end();
+    })
+})
+
 
 module.exports = router;
