@@ -13,8 +13,10 @@ router.get('/', (req, res) => {
         User.findOne({ email: email }, function (err, data) {
             if (err) return console.log(err);
             user = data.firstName;
-            if (data.role === 'admin') isAdmin = true;
-            res.render('jumbo',{ user: user, isAdmin: isAdmin, title: 'MyApp', css: ['jumbo.css'] });
+            if (data.role === 'admin') {
+                isAdmin = true;
+            }
+            res.render('jumbo',{ id: data._id ,user: user, isAdmin: isAdmin, title: 'MyApp', css: ['jumbo.css'] });
         })
     }
     else

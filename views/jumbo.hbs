@@ -27,9 +27,10 @@
           </li>
         </ul>
         {{#if user}}
-        <a class="nav-link my-link" href="signout">Log Out</a>
+        <a class="nav-link my-link" href="/users/{{id}}">My Profile</a>
+        <a class="nav-link my-link" href="/signout">Log Out</a>
         {{else}}
-          <a class="nav-link my-link" href="signin">Log In</a>
+          <a class="nav-link my-link" href="/signin">Log In</a>
           {{/if}}
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
