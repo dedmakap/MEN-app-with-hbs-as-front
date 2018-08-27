@@ -1,0 +1,7 @@
+.search-box {
+    display: flex;
+    flex-direction: row;
+}
+.age-form {
+    margin-left: 100px;
+}

@@ -1,10 +1,48 @@
-    <h2>Список пользователей</h2>
-    <a href="/">Back to main page</a>
-    <table class="table table-condensed table-striped table-bordered">
-        <thead><tr><th>Id</th><th>Name</th><th>Email</th><th>Age</th><th>Username</th><th>Role</th></tr></thead>
-        <tbody>
-                {{#each people}}
-     <tr><td><a href="/users/{{this._id}}">{{this._id}}</a></td><td>{{this.firstName}}</td><td>{{this.email}}</td><td>{{this.age}}</td><td>{{this.userName}}</td><td>{{this.role}}</td></tr>
-    {{/each}}
-        </tbody>
-    </table>
+<h2>Users list</h2>
+<a href="/">Back to main page</a>
+<div class="search-box">
+    <form action="/users/search" method="GET">
+        <input type="search" placeholder="Search by name" name="q">
+        <input type="submit" value="Search">
+    </form>
+    <form action="users/" method="GET" class="age-form">
+        <select name="start" id="start-select">
+            <option selected>Select age from</option>
+            {{#each ageRange}}
+            <option value="y{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <select name="end" id="end-select">
+            <option selected>Select age to</option>
+            {{#each ageRange}}
+            <option value="y{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input type="submit" value="Search">
+    </form>
+</div>
+<table class="table table-condensed table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Username</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each people}}
+        <tr>
+            <td><a href="/users/{{this._id}}">{{this._id}}</a></td>
+            <td>{{this.firstName}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.age}}</td>
+            <td>{{this.userName}}</td>
+            <td>{{this.role}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="../public/javascripts/usersbyagesorter.js"></script>
