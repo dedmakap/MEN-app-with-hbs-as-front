@@ -16,7 +16,7 @@ var userScheme = new Schema({
     avatar : {
         type : String,
     }, 
-    age : {type : String}
+    age : {type : Number}
 });
 
 var User = mongoose.model("User", userScheme);

@@ -5,17 +5,17 @@
         <input type="search" placeholder="Search by name" name="q">
         <input type="submit" value="Search">
     </form>
-    <form action="users/" method="GET" class="age-form">
+    <form action="/users/search/age" method="GET" class="age-form">
         <select name="start" id="start-select">
             <option selected>Select age from</option>
             {{#each ageRange}}
-            <option value="y{{this}}">{{this}}</option>
+            <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
         <select name="end" id="end-select">
             <option selected>Select age to</option>
             {{#each ageRange}}
-            <option value="y{{this}}">{{this}}</option>
+            <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
         <input type="submit" value="Search">
