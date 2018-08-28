@@ -8,10 +8,9 @@ $('body').on('focus', '[contenteditable]', function() {
     if (textBefore === textAfter) { return }
     $this.data('before', textAfter);
     var target = event.target.id;
-    console.log(textAfter);
     $.ajax({
         method: 'PUT',
-        url: `/users/${$('.data-table').data('userid')}`,
+        url: `/users/userpage/${$('.data-table').data('userid')}`,
         data: {key: target, data: textAfter} 
     }) 
     

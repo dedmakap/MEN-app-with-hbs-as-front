@@ -30,8 +30,10 @@ function checkGuestRole(req, res, next) {
 
 router.get('/:id', checkGuestRole, function (req, res, next) {
   var id = req.params['id'];
+  //console.log(id);
   var avaPath = path.join(__dirname, "../public/images/");
-  var avaFile;
+  //console.log(avaPath);
+  var avaFile
   User.findOne({ _id: id }, function (err, owner) {
     if (fs.existsSync(avaPath + owner.avatar)) {
       avaFile = owner.avatar;
@@ -39,6 +41,7 @@ router.get('/:id', checkGuestRole, function (req, res, next) {
     else {
       avaFile = '';
     }
+    console.log(owner);
     res.render('userpage', {
       title: "User's profile page",
       firstname: owner.firstName,
@@ -64,12 +67,13 @@ router.post('/:id', upload.single('file'), function (req, res, next) {
     if (err) throw (err)
     data.avatar = req.file.filename;
     data.save();
-    res.redirect('/users/' + req.params['id']);
+    res.redirect('/users/userpage' + req.params['id']);
   })
 })
 
 router.put('/:id', function (req, res) {
   var key;
+  console.log(req);
   switch (req.body.key) {
     case 'firstname-tab':
       key = 'firstName'

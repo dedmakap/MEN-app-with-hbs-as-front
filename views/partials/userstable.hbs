@@ -1,0 +1,10 @@
+{{#each people}}
+        <tr>
+            <td><a href="/users/userpage/{{this._id}}">{{this._id}}</a></td>
+            <td>{{this.firstName}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.age}}</td>
+            <td>{{this.userName}}</td>
+            <td>{{this.role}}</td>
+        </tr>
+        {{/each}}
