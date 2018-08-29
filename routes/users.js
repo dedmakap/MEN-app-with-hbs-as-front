@@ -29,31 +29,6 @@ function checkAdminRole(req, res, next) {
   })
 }
 
-
-
-// router.get('/search/', function (req, res, next) {
-//   var searchKey = new RegExp(req.query.q.trim(), 'i');
-//   User.find({ firstName: searchKey }, function (err, userslist) {
-//     return res.send({ageRange: generateAgeRange(), people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
-//   })
-
-// })
-
-// router.get('/search/age', function (req, res, next) {
-//   var start = +req.query.start;
-//   var end = +req.query.end;
-//   console.log(typeof start,typeof end);
-//   if (end < start) {
-//     var buf = end;
-//     end = start;
-//     start = buf;
-//   }
-//   User.find({age: {$gte : start, $lte : end}}, function (err, userslist) {
-//     console.log(start,end);
-//     return res.render('userstable', {ageRange: generateAgeRange(), people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css']})
-//   })
-// })
-
 router.get('/', checkAdminRole, function (req, res, next) {
   User.find({}, function (err, userslist) {
     return res.render('users', { ageRange: generateAgeRange(), people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })

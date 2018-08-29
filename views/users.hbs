@@ -5,7 +5,7 @@
         <input type="search" placeholder="Search by name" name="q" id="name-input">
         <input type="submit" value="Search">
     </form>
-    <form action="/users/search/age" method="GET" class="age-form">
+    <form action="/users/search/" method="GET" class="age-form">
         <select name="start" id="start-select">
             <option selected>Select age from</option>
             {{#each ageRange}}
@@ -21,7 +21,7 @@
         <input type="submit" value="Search">
     </form>
 </div>
-<table class="table table-condensed table-striped table-bordered">
+<table class="table table-condensed table-striped table-bordered paginated">
     <thead>
         <tr>
             <th>Id</th>
@@ -37,3 +37,4 @@
     </tbody>
 </table>
 <script src="/javascripts/userSearcher.js"></script>
+<script src="/javascripts/paginator.js"></script>
