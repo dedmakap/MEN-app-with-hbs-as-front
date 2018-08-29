@@ -6,7 +6,7 @@ var User = require('../database/user');
 function searchByName(req,res) {
     var searchKey = new RegExp(req.query.q.trim(), 'i');
     User.find({ firstName: searchKey }, function (err, userslist) {
-      return res.send({ageRange: generateAgeRange(), people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
+      return res.render('partials/userstable',{layout:false, people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
     })
   }
   
@@ -21,15 +21,18 @@ function searchByName(req,res) {
     }
     User.find({age: {$gte : start, $lte : end}}, function (err, userslist) {
       console.log(start,end);
-      return res.render('users', {ageRange: generateAgeRange(), people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css']})
+      return res.render('partials/userstable', {layout:false, people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css']})
     })
   }
 
 //router.get('/', searchByName(req,res))
 
 router.get('/', function (req, res, next) {
-    console.log(res);
     searchByName(req,res)  
+})
+
+router.get('/age', function (req, res, next) {
+    searchByAge(req,res)  
 })
 
   

@@ -1,8 +1,8 @@
 <h2>Users list</h2>
 <a href="/">Back to main page</a>
 <div class="search-box">
-    <form action="/users/search" method="GET">
-        <input type="search" placeholder="Search by name" name="q">
+    <form action="/users/search" method="GET" class="name-form" id="name-form">
+        <input type="search" placeholder="Search by name" name="q" id="name-input">
         <input type="submit" value="Search">
     </form>
     <form action="/users/search/age" method="GET" class="age-form">
@@ -32,8 +32,8 @@
             <th>Role</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="users-table-rows">
         {{> userstable }}
     </tbody>
 </table>
-<script src="../public/javascripts/usersbyagesorter.js"></script>
+<script src="/javascripts/userSearcher.js"></script>
