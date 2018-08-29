@@ -1,8 +1,9 @@
-$('.age-form').submit(function (e) {
+$('.search-form').submit(function (e) {
     e.preventDefault();
-    var ageForm = $('.age-form')
-    var selectStart = ageForm[0]['start'];
-    var selectEnd = ageForm[0]['end'];
+    var searchForm = $('.search-form')
+    var selectStart = searchForm[0]['start'];
+    var selectEnd = searchForm[0]['end'];
+    var nameKey = searchForm[0]['q'].value;
     var selectedIndexStart = selectStart.selectedIndex;
     var selectedIndexEnd = selectEnd.selectedIndex;
     var start;
@@ -19,11 +20,10 @@ $('.age-form').submit(function (e) {
     else {
         end = selectEnd.options[selectedIndexEnd].value;
     }
-    console.log(start,end);
         $.ajax({
             method: 'GET',
             url: '/users/search/',
-            data: { start: start, end: end },
+            data: { start: start, end: end, q: nameKey },
             success: function (data) {
                 $('#users-table-rows').html(data);
             }
@@ -44,26 +44,16 @@ function debounce(func, delay) {
     };
 }
 
-var debouncedFunc = debounce(function () {
-    $('.name-form').submit()
+var debouncedInput = debounce(function () {
+    $('.search-form').submit()
 }, 1000);
 
 
 // todo: change to jquery event | done
 $('#name-input').on('input', function () {
-    debouncedFunc();
+    debouncedInput();
 }) 
 
-$('.name-form').submit(function (e) {
-    e.preventDefault();
-    var nameForm = $('.name-form');
-    var searchkey = nameForm[0]['q'].value;
-    $.ajax({
-        method: 'GET',
-        url: '/users/search',
-        data: { q: searchkey },
-        success: function (data) {
-            $('#users-table-rows').html(data);
-        }
-    })
+$('.search-select').on('change', function () {
+    debouncedInput();
 })

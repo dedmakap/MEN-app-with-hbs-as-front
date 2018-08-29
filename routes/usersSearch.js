@@ -3,31 +3,10 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require('../database/user');
 
-function searchByName(req, res) {
-  var searchKey = new RegExp(req.query.q.trim(), 'i');
-  User.find({ firstName: searchKey }, function (err, userslist) {
-    return res.render('partials/userstable', { layout: false, people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
-  })
-}
-
-function searchByAge(req, res) {
-  var start = +req.query.start;
-  var end = +req.query.end;
-  console.log(typeof start, typeof end);
-  if (end < start) {
-    var buf = end;
-    end = start;
-    start = buf;
-  }
-  User.find({ age: { $gte: start, $lte: end } }, function (err, userslist) {
-    console.log(start, end);
-    return res.render('partials/userstable', { layout: false, people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
-  })
-}
 
 function search(req, res) {
   var nameKey, ageKey, startAge, endAge; 
-  var query = {};
+  var myQuery = {};
   if (!req.query.q) {
     nameKey = false
   } 
@@ -38,6 +17,7 @@ function search(req, res) {
     ageKey = false
   }
   else {
+    ageKey = true
     startAge = +req.query.start;
     endAge = +req.query.end;
     if (endAge < startAge) {
@@ -48,12 +28,13 @@ function search(req, res) {
   }
 
   if (nameKey) {
-    query.firstName = nameKey
+    myQuery.firstName = nameKey
   }
   if (ageKey) {
-    query.age = { $gte: startAge, $lte: endAge}
+    myQuery.age = { $gte: startAge, $lte: endAge}
   }
-  User.find(query, function (err, userslist) {
+  console.log(myQuery);
+  User.find(myQuery, function (err, userslist) {
     return res.render('partials/userstable', { layout: false, people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
   })
 
@@ -70,7 +51,7 @@ router.get('/', function (req, res, next) {
 /*
 todos:
 - pagination
-- one route for all queries
+- one route for all queries | done
 - be able to use only one age dropdown | done
 - add sorting @@
 */

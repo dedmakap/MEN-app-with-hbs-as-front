@@ -1,18 +1,16 @@
 <h2>Users list</h2>
 <a href="/">Back to main page</a>
 <div class="search-box">
-    <form action="/users/search" method="GET" class="name-form" id="name-form">
+    <form action="/users/search" method="GET" class="search-form" id="search-form">
         <input type="search" placeholder="Search by name" name="q" id="name-input">
         <input type="submit" value="Search">
-    </form>
-    <form action="/users/search/" method="GET" class="age-form">
-        <select name="start" id="start-select">
+        <select class="search-select" name="start" id="start-select">
             <option selected>Select age from</option>
             {{#each ageRange}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
-        <select name="end" id="end-select">
+        <select class="search-select" name="end" id="end-select">
             <option selected>Select age to</option>
             {{#each ageRange}}
             <option value="{{this}}">{{this}}</option>
