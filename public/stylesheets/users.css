@@ -6,3 +6,7 @@
 .page-number {
     margin: 5px;
 }
+
+.page-current {
+    text-decoration: underline;
+}

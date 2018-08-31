@@ -1,6 +1,6 @@
 $('table.paginated').each(function() {
     var currentPage = 0;
-    var numPerPage = 4;
+    var numPerPage = 50;
     var $table = $(this);
     $table.on('repaginate', function() {
         $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();

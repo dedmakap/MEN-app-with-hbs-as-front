@@ -1,10 +1,38 @@
-{{#each people}}
-        <tr>
-            <td><a href="/users/userpage/{{this._id}}">{{this._id}}</a></td>
-            <td>{{this.firstName}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.age}}</td>
-            <td>{{this.userName}}</td>
-            <td>{{this.role}}</td>
-        </tr>
-        {{/each}}
+<table class="table table-condensed table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Age</th>
+      <th>Username</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody id="users-table-rows">
+    {{#each people}}
+    <tr>
+      <td><a href="/users/userpage/{{this._id}}">{{this._id}}</a></td>
+      <td>{{this.firstName}}</td>
+      <td>{{this.email}}</td>
+      <td>{{this.age}}</td>
+      <td>{{this.userName}}</td>
+      <td>{{this.role}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#pagination current pages size}}
+<div class="pagination">
+  {{#unless startFromFirstPage}}
+  <button type="button" class="btn btn-link page-btn">&lt;</button>
+  {{/unless}} {{#each pages}} {{#if isCurrent}}
+  <button type="button" class="btn btn-link page-btn page-current">{{page}}</button>
+  {{/if}} {{#unless isCurrent}}
+  <button type="button" class="btn btn-link page-btn">{{page}}</button>
+  {{/unless}} {{/each}} {{#unless endAtLastPage}}
+  <button type="button" class="btn btn-link page-btn">&gt;</button>
+  {{/unless}}
+</div>
+{{/pagination}}

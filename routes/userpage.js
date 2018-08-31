@@ -13,10 +13,10 @@ function checkGuestRole(req, res, next) {
   if (!req.cookies.token) {
     res.redirect('/');
   }
-  var id = req.params['id'];
+  var  { id } = req.params;
   var email = jwt.verify(req.cookies.token, 'secret');
-  User.findOne({ email: email }, function (err, guest) {
-    if (err) throw err
+  User.findOne({ email }, function (err, guest) {
+    if (err) return console.log(err); 
     if ((guest.role !== 'admin') && (guest._id != id)) {
       res.redirect('/')
     }
@@ -29,19 +29,17 @@ function checkGuestRole(req, res, next) {
 }
 
 router.get('/:id', checkGuestRole, function (req, res, next) {
-  var id = req.params['id'];
-  //console.log(id);
+  var { id } = req.params;
   var avaPath = path.join(__dirname, "../public/images/");
-  //console.log(avaPath);
   var avaFile
   User.findOne({ _id: id }, function (err, owner) {
+    if (err) return console.log(err);
     if (fs.existsSync(avaPath + owner.avatar)) {
       avaFile = owner.avatar;
     }
     else {
       avaFile = '';
     }
-    console.log(owner);
     res.render('userpage', {
       title: "User's profile page",
       firstname: owner.firstName,
@@ -58,22 +56,19 @@ router.get('/:id', checkGuestRole, function (req, res, next) {
 });
 
 router.post('/:id', upload.single('file'), function (req, res, next) {
-  //console.log(req);
-  if (!req.file) res.redirect('/users/' + req.params['id']);
-  //console.log(req.file);
+  if (!req.file) res.redirect('/users/userpage/' + req.params.id);
   const tempPath = req.file.path;
   const targetPath = path.join(__dirname, "../public/images/");
-  User.findOne({ _id: req.params['id'] }, function (err, data) {
-    if (err) throw (err)
+  User.findOne({ _id: req.params.id }, function (err, data) {
+    if (err) return console.log(err); 
     data.avatar = req.file.filename;
     data.save();
-    res.redirect('/users/userpage' + req.params['id']);
+    res.redirect('/users/userpage/' + req.params.id);
   })
 })
 
 router.put('/:id', function (req, res) {
   var key;
-  console.log(req);
   switch (req.body.key) {
     case 'firstname-tab':
       key = 'firstName'
@@ -92,7 +87,7 @@ router.put('/:id', function (req, res) {
   }
   var data = req.body.data;
   User.findOneAndUpdate({ _id: req.params['id'] }, { [key]: data }, function (err, user) {
-    if (err) throw (err)
+    if (err) console.log(err); 
     res.end();
   })
 })

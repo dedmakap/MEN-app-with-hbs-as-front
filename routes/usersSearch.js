@@ -5,11 +5,14 @@ var User = require('../database/user');
 
 
 function search(req, res) {
-  var nameKey, ageKey, startAge, endAge; 
+  var nameKey, ageKey, startAge, endAge;
   var myQuery = {};
+  var perPage = 9;
+  var page = Number(req.query.page) || 1;
+
   if (!req.query.q) {
     nameKey = false
-  } 
+  }
   else {
     nameKey = new RegExp(req.query.q.trim(), 'i');
   }
@@ -31,12 +34,31 @@ function search(req, res) {
     myQuery.firstName = nameKey
   }
   if (ageKey) {
-    myQuery.age = { $gte: startAge, $lte: endAge}
+    myQuery.age = { $gte: startAge, $lte: endAge }
   }
-  console.log(myQuery);
-  User.find(myQuery, function (err, userslist) {
-    return res.render('partials/userstable', { layout: false, people: userslist, title: 'Users list page', css: ['bootstrap.min.css', 'users.css'] })
-  })
+
+  let users = null;
+  User.find(myQuery)
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .then(function (userslist) {
+      users = userslist;
+      return User.count(myQuery)
+    })
+    .then(function (count) {
+      return res.render('partials/userstable', {
+        layout: false,
+        people: users,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        size: 5,
+        title: 'Users list page',
+        css: ['bootstrap.min.css', 'users.css']
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 
 }
 
@@ -44,18 +66,6 @@ function search(req, res) {
 router.get('/', function (req, res, next) {
   search(req, res)
 })
-
-// router.get('/age', function (req, res, next) {
-//   searchByAge(req, res)
-// })
-/*
-todos:
-- pagination
-- one route for all queries | done
-- be able to use only one age dropdown | done
-- add sorting @@
-*/
-
 
 
 module.exports = router;

@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('hbs');
 var fs = require('fs');
+var ifCondHelper = require('./views/helpers/if-cond')
+var paginationHelper = require('./views/helpers/pagination')
 
 var userpageRouter = require('./routes/userpage');
 var usersRouter = require('./routes/users');
@@ -33,6 +35,9 @@ filenames.forEach(function (filename) {
   return hbs.registerPartial(name, template);
 });
 
+    
+hbs.registerHelper('ifCond', ifCondHelper);
+hbs.registerHelper('pagination', paginationHelper);
 
 
 app.use(logger('dev'));

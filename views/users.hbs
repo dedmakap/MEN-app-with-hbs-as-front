@@ -3,7 +3,6 @@
 <div class="search-box">
     <form action="/users/search" method="GET" class="search-form" id="search-form">
         <input type="search" placeholder="Search by name" name="q" id="name-input">
-        <input type="submit" value="Search">
         <select class="search-select" name="start" id="start-select">
             <option selected>Select age from</option>
             {{#each ageRange}}
@@ -16,23 +15,10 @@
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
-        <input type="submit" value="Search">
     </form>
 </div>
-<table class="table table-condensed table-striped table-bordered paginated">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Age</th>
-            <th>Username</th>
-            <th>Role</th>
-        </tr>
-    </thead>
-    <tbody id="users-table-rows">
-        {{> userstable }}
-    </tbody>
-</table>
+<div id="pagination-area">
+{{> userstable }}
+</div>
 <script src="/javascripts/userSearcher.js"></script>
 <script src="/javascripts/paginator.js"></script>
