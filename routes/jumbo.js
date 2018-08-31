@@ -6,7 +6,7 @@ var User = require('../database/user')
 
 router.get('/', (req, res) => {
     if (req.cookies.token) {
-        var token = req.cookies.token;
+        var { token } = req.cookies;
         var email = jwt.verify(token, 'secret'); 
         var user;
         var isAdmin = false;

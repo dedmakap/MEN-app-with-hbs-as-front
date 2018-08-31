@@ -48,8 +48,6 @@ var debouncedInput = debounce(function () {
     $('.search-form').submit()
 }, 1000);
 
-
-// todo: change to jquery event | done
 $('#name-input').on('input', function () {
     debouncedInput();
 })
