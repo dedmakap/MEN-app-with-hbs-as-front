@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../database/user');
 var jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
+
 
 
 router.get('/', (req, res) => {
@@ -21,18 +23,23 @@ router.post('/', (req, res) => {
                 noSuchEmail: true
             })
         }
-        if (user.password === pass) {
-            var token = jwt.sign(user.email, 'secret');
-            console.log(user.email);
-            res.cookie('token', token);
-            return res.redirect('/')
-        }
 
-        return res.render('sign-in', {
-            title: 'Log in page',
-            css: ['style.css'],
-            wrongPassword: true
-        })
+        bcrypt.compare(pass, user.password, function(err, confirm) {
+            if (err) {console.log(err);}
+            if(confirm) {
+             // Passwords match
+             var token = jwt.sign(user.email, 'secret');
+                res.cookie('token', token);
+                return res.redirect('/')
+            } else {
+             // Passwords don't match
+             return res.render('sign-in', {
+                title: 'Log in page',
+                css: ['style.css'],
+                wrongPassword: true
+            })
+            } 
+          });
     });
 
 })

@@ -30,7 +30,12 @@
             <tr>
                 <td>Your role:</td>
                 {{#if admin}}
-                <td><div contenteditable="true" id="role-tab">{{role}}</div></td>
+                <td><div contenteditable="false" id="role-tab">{{role}}</div></td>
+                <td><select name="role" id="role-select">
+                    <option selected hidden>Change role</option>
+                    <option value="5b8cec15dbf500a68decf847">Admin</option>
+                    <option value="5b8ce284945dc819893a55d1">User</option>
+                </select></td>
                 {{else}}
                 <td><div contenteditable="false" id="role-tab">{{role}}</div></td>
                 {{/if}}

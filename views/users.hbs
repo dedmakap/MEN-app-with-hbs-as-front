@@ -4,13 +4,13 @@
     <form action="/users/search" method="GET" class="search-form" id="search-form">
         <input type="search" placeholder="Search by name" name="q" id="name-input">
         <select class="search-select" name="start" id="start-select">
-            <option selected>Select age from</option>
+            <option selected hidden>Select age from</option>
             {{#each ageRange}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
         <select class="search-select" name="end" id="end-select">
-            <option selected>Select age to</option>
+            <option selected hidden>Select age to</option>
             {{#each ageRange}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
@@ -21,4 +21,3 @@
 {{> userstable }}
 </div>
 <script src="/javascripts/userSearcher.js"></script>
-<script src="/javascripts/paginator.js"></script>

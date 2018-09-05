@@ -1,3 +1,7 @@
+$( document ).ready( function () {
+    
+
+
 $('body').on('focus', '[contenteditable]', function() {
     var $this = $(this);
     $this.data('before', $this.text().trim());
@@ -15,3 +19,16 @@ $('body').on('focus', '[contenteditable]', function() {
     }) 
     
 });
+
+$('#role-select').on('change', function () {
+    $.ajax({
+        method: 'PUT',
+        url: `/users/userpage/${$('.data-table').data('userid')}`,
+        data: {roleId: event.target.value},
+        success: function (data) {
+            $('#role-tab').text(data.name)
+        }
+    });
+})
+
+})

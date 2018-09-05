@@ -41,6 +41,7 @@ function search(req, res) {
   User.find(myQuery)
     .skip((perPage * page) - perPage)
     .limit(perPage)
+    .populate('role', 'name -_id')
     .then(function (userslist) {
       users = userslist;
       return User.count(myQuery)
