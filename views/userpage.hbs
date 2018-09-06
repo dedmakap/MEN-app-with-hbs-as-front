@@ -1,6 +1,9 @@
 <h1>Your profile page</h1>
 <a href="/">Back to main page</a>
 <p>Welcome, {{firstname}}!</p>
+{{#if admin}}
+<a href="/users">Back to users list</a>
+{{/if}}
 <content>
     <div class="profile-pic">
         {{#if avatar}}

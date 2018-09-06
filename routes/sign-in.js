@@ -24,22 +24,22 @@ router.post('/', (req, res) => {
             })
         }
 
-        bcrypt.compare(pass, user.password, function(err, confirm) {
-            if (err) {console.log(err);}
-            if(confirm) {
-             // Passwords match
-             var token = jwt.sign(user.email, 'secret');
+        bcrypt.compare(pass, user.password, function (err, confirm) {
+            if (err) { return console.log(err); }
+            if (confirm) {
+                // Passwords match
+                var token = jwt.sign(user.email, 'secret');
                 res.cookie('token', token);
                 return res.redirect('/')
             } else {
-             // Passwords don't match
-             return res.render('sign-in', {
-                title: 'Log in page',
-                css: ['style.css'],
-                wrongPassword: true
-            })
-            } 
-          });
+                // Passwords don't match
+                return res.render('sign-in', {
+                    title: 'Log in page',
+                    css: ['style.css'],
+                    wrongPassword: true
+                })
+            }
+        });
     });
 
 })

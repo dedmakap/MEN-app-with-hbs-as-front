@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var jwt = require('jsonwebtoken');
 var User = require('../database/user');
+var checkAuth = require('../middlewares/checkauth');
 
 
 function search(req, res) {
@@ -36,12 +36,12 @@ function search(req, res) {
   if (ageKey) {
     myQuery.age = { $gte: startAge, $lte: endAge }
   }
-
   let users = null;
   User.find(myQuery)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .populate('role', 'name -_id')
+    .sort({[req.query.target]: req.query.direction})
     .then(function (userslist) {
       users = userslist;
       return User.count(myQuery)
@@ -51,6 +51,8 @@ function search(req, res) {
         layout: false,
         people: users,
         current: page,
+        direction: req.query.direction,
+        target: req.query.target,
         pages: Math.ceil(count / perPage),
         size: 5,
         title: 'Users list page',
@@ -64,7 +66,7 @@ function search(req, res) {
 }
 
 
-router.get('/', function (req, res, next) {
+router.get('/',checkAuth, function (req, res, next) {
   search(req, res)
 })
 

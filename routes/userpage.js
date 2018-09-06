@@ -1,40 +1,21 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../database/user');
-var jwt = require('jsonwebtoken');
 var multer = require('multer');
 var path = require("path");
 var fs = require("fs");
 var Role = require('../database/role');
-
+var checkAuth = require('../middlewares/checkauth');
 var upload = multer({ dest: './public/images' });
+var checkGuestRole = require('../middlewares/checkguestrole')
 
 
-function checkGuestRole(req, res, next) {
-    if (!req.cookies.token) {
-        res.redirect('/');
-    }
-    var { id } = req.params;
-    var email = jwt.verify(req.cookies.token, 'secret');
-    User.findOne({ email })
-        .populate('role', 'name')
-        .exec(function (err, guest) {
-        if (err) return console.log(err);
-        if ((guest.role.name !== 'admin') && (guest._id != id)) {
-            res.redirect('/')
-        }
-        else {
-            if (guest.role.name === 'admin') { req.isAdmin = true; }
 
-            next();
-        }
-    })
-}
 
-router.get('/:id', checkGuestRole, function (req, res, next) {
+router.get('/:id', checkAuth, checkGuestRole, function (req, res) {
     var { id } = req.params;
     var avaPath = path.join(__dirname, "../public/images/");
-    var avaFile
+    var avaFile;
     User.findOne({ _id: id })
         .populate('role', 'name -_id')
         .exec(function (err, owner) {
@@ -60,7 +41,7 @@ router.get('/:id', checkGuestRole, function (req, res, next) {
 
 });
 
-router.post('/:id', upload.single('file'), function (req, res, next) {
+router.post('/:id', checkAuth, upload.single('file'), function (req, res) {
     if (!req.file) res.redirect('/users/userpage/' + req.params.id);
     User.findOneAndUpdate({ _id: req.params.id }, {avatar :req.file.filename }, function (err, data) {
         if (err) return console.log(err);
@@ -68,7 +49,7 @@ router.post('/:id', upload.single('file'), function (req, res, next) {
     })
 })
 
-router.put('/:id', function (req, res) {
+router.put('/:id', checkAuth, function (req, res) {
     if (req.body.roleId) {
         return Role.findOne({_id : req.body.roleId}, function (err, data) {
             if (err) {console.log(err);}
@@ -78,8 +59,6 @@ router.put('/:id', function (req, res) {
                 return res.json({
                     name: data.name
                 });
-                //return res.end();
-                
             })
         })
     }

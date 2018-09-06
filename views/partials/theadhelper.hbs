@@ -1,0 +1,59 @@
+{{#ifCond target '===' '_id'}}
+      {{#ifCond direction '===' 'asc'}}
+      <th>Id<button class="btn btn-link sorter" id="_id" value="desc">&#x25B2;</button></th>
+      {{else}}
+      <th>Id<button class="btn btn-link sorter" id="_id" value="asc">&#x25BC;</button></th>
+      {{/ifCond}}
+      {{else}}
+      <th>Id<button class="btn btn-link sorter" id="_id" value="asc">&#x25BC;</button></th>
+{{/ifCond}}
+
+{{#ifCond target '===' 'firstName'}}
+      {{#ifCond direction '===' 'asc'}}
+      <th>Name<button class="btn btn-link sorter" id="firstName" value="desc">&#x25B2;</button></th>
+      {{else}}
+      <th>Name<button class="btn btn-link sorter" id="firstName" value="asc">&#x25BC;</button></th>
+      {{/ifCond}}
+      {{else}}
+      <th>Name<button class="btn btn-link sorter" id="firstName" value="asc">&#x25BC;</button></th>
+{{/ifCond}}
+
+{{#ifCond target '===' 'email'}}
+      {{#ifCond direction '===' 'asc'}}
+      <th>Email<button class="btn btn-link sorter" id="email" value="desc">&#x25B2;</button></th>
+      {{else}}
+      <th>Email<button class="btn btn-link sorter" id="email" value="asc">&#x25BC;</button></th>
+      {{/ifCond}}
+      {{else}}
+      <th>Email<button class="btn btn-link sorter" id="email" value="asc">&#x25BC;</button></th>
+{{/ifCond}}
+
+{{#ifCond target '===' 'age'}}
+      {{#ifCond direction '===' 'asc'}}
+      <th>Age<button class="btn btn-link sorter" id="age" value="desc">&#x25B2;</button></th>
+      {{else}}
+      <th>Age<button class="btn btn-link sorter" id="age" value="asc">&#x25BC;</button></th>
+      {{/ifCond}}
+      {{else}}
+      <th>Age<button class="btn btn-link sorter" id="age" value="asc">&#x25BC;</button></th>
+{{/ifCond}}
+
+{{#ifCond target '===' 'userName'}}
+      {{#ifCond direction '===' 'asc'}}
+      <th>Username<button class="btn btn-link sorter" id="userName" value="desc">&#x25B2;</button></th>
+      {{else}}
+      <th>Username<button class="btn btn-link sorter" id="userName" value="asc">&#x25BC;</button></th>
+      {{/ifCond}}
+      {{else}}
+      <th>Username<button class="btn btn-link sorter" id="userName" value="asc">&#x25BC;</button></th>
+{{/ifCond}}
+
+{{#ifCond target '===' 'role'}}
+      {{#ifCond direction '===' 'asc'}}
+      <th>Role<button class="btn btn-link sorter" id="role" value="desc">&#x25B2;</button></th>
+      {{else}}
+      <th>Role<button class="btn btn-link sorter" id="role" value="asc">&#x25BC;</button></th>
+      {{/ifCond}}
+      {{else}}
+      <th>Role<button class="btn btn-link sorter" id="role" value="asc">&#x25BC;</button></th>
+{{/ifCond}}

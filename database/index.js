@@ -6,5 +6,5 @@ function connectToDb() {
 }
 
 module.exports = {
-    connectToDb: connectToDb,
+    connectToDb,
 }

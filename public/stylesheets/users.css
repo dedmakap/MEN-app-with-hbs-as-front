@@ -10,3 +10,7 @@
 .page-current {
     text-decoration: underline;
 }
+
+.sorter {
+    float: right;
+}

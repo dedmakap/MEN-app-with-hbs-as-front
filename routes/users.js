@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var jwt = require('jsonwebtoken');
 var User = require('../database/user');
+var checkAdminRole = require('../middlewares/checkadminrole')
+var checkAuth = require('../middlewares/checkauth');
 
 function generateAgeRange() {
     var ageFrom = 10;
@@ -14,24 +15,8 @@ function generateAgeRange() {
     return ageRange;
 }
 
-function checkAdminRole(req, res, next) {
-    if (!req.cookies.token) {
-        res.redirect('/');
-    }
-    var email = jwt.verify(req.cookies.token, 'secret');
-    User.findOne({ email })
-        .populate('role', 'name')
-        .exec(function (err, data) {
-            if (err) return console.log(err);
-            var { role } = data;
-            if (role.name === 'admin') {
-                return next();
-            }
-            return res.redirect('/');
-        })
-}
 
-router.get('/', checkAdminRole, function (req, res, next) {
+router.get('/',checkAuth, checkAdminRole, function (req, res, next) {
 
     var perPage = 9;
     var page = Number(req.params.page) || 1;

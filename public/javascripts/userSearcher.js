@@ -99,3 +99,47 @@ $('body').on('click', '.page-btn', function() {
         }
     })
 })
+
+$('body').on('click', '.sorter', function() {
+    var searchForm = $('.search-form')
+    var selectStart = searchForm[0]['start'];
+    var selectEnd = searchForm[0]['end'];
+    var nameKey = searchForm[0]['q'].value;
+    var selectedIndexStart = selectStart.selectedIndex;
+    var selectedIndexEnd = selectEnd.selectedIndex;
+    var start;
+    var end;
+    if (!$('.page-current')[0]){
+        return
+    }
+    var currentPage = $('.page-current')[0].textContent;
+    var direction = event.target.value;
+    var target = event.target.id;
+    if (selectedIndexStart === 0) {
+        start = 0;
+    }
+    else {
+        start = selectStart.options[selectedIndexStart].value;
+    }
+    if (selectedIndexEnd === 0) {
+        end = 150;
+    }
+    else {
+        end = selectEnd.options[selectedIndexEnd].value;
+    }
+    $.ajax({
+        method: 'GET',
+        url: '/users/search/',
+        data: {
+            start: start,
+            end: end,
+            q: nameKey,
+            page: currentPage,
+            direction: direction,
+            target: target
+        },
+        success: function (data) {
+            $('#pagination-area').html(data);
+        }
+    })
+})
