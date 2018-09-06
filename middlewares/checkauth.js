@@ -1,7 +1,7 @@
 var User = require('../database/user');
 var jwt = require('jsonwebtoken');
 
-function checkAuthentication(req, res, next) {
+function checkAuth(req, res, next) {
     if (!req.cookies.token) {
         res.redirect('/');
     }
@@ -15,4 +15,27 @@ function checkAuthentication(req, res, next) {
         }) 
 }
 
-module.exports = checkAuthentication;
+function checkAdminRole(req, res, next) {
+    if (req.guest.role.name === 'admin') {
+        return next();
+    }
+    return res.redirect('/');
+
+}
+
+function checkGuestRole(req, res, next) {
+    var { id } = req.params;
+        if ((req.guest.role.name !== 'admin') && (req.guest._id != id)) {
+            res.redirect('/')
+        }
+        else {
+            if (req.guest.role.name === 'admin') { req.isAdmin = true; }
+            next();
+        }
+}
+
+module.exports = {
+    checkAuth,
+    checkGuestRole,
+    checkAdminRole,
+};

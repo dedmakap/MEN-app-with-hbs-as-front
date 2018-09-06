@@ -5,9 +5,9 @@ var multer = require('multer');
 var path = require("path");
 var fs = require("fs");
 var Role = require('../database/role');
-var checkAuth = require('../middlewares/checkauth');
+var {checkAuth} = require('../middlewares/checkauth');
 var upload = multer({ dest: './public/images' });
-var checkGuestRole = require('../middlewares/checkguestrole')
+var {checkGuestRole} = require('../middlewares/checkauth')
 
 
 

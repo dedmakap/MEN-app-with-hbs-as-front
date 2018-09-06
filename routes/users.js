@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../database/user');
-var checkAdminRole = require('../middlewares/checkadminrole')
-var checkAuth = require('../middlewares/checkauth');
+var {checkAdminRole} = require('../middlewares/checkauth')
+var {checkAuth} = require('../middlewares/checkauth');
 
 function generateAgeRange() {
     var ageFrom = 10;

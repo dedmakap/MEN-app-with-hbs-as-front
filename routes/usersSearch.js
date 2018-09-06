@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../database/user');
-var checkAuth = require('../middlewares/checkauth');
+var {checkAuth} = require('../middlewares/checkauth');
 
 
 function search(req, res) {
