@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 
 function checkAuth(req, res, next) {
     if (!req.cookies.token) {
-        res.redirect('/');
+        return res.redirect('/');
     }
     var email = jwt.verify(req.cookies.token, 'secret');
     User.findOne({ email })
@@ -11,7 +11,7 @@ function checkAuth(req, res, next) {
         .exec( function (err, guest) {
             if (err) return res.redirect('/');
             req.guest = guest;
-            next();
+            return next();
         }) 
 }
 

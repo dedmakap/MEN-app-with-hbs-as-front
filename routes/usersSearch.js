@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../database/user');
-var {checkAuth} = require('../middlewares/checkauth');
+var ajaxAuth = require('../middlewares/ajaxauth');
 
 
 function search(req, res) {
@@ -66,8 +66,8 @@ function search(req, res) {
 }
 
 
-router.get('/',checkAuth, function (req, res, next) {
-  search(req, res)
+router.get('/',ajaxAuth, function (req, res, next) {
+ return search(req, res)
 })
 
 

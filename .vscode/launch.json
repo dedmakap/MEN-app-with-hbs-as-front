@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "/home/fusion/.nvm/versions/node/v8.11.3/bin/node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/bin/www"
+            "program": "${workspaceFolder}/bin/www",
+            "runtimeExecutable": "/home/fusion/.nvm/versions/node/v8.11.3/bin/node"
         }
     ]
 }

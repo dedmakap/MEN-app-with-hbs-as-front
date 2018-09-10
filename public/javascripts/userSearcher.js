@@ -24,8 +24,12 @@ $('.search-form').submit(function (e) {
         method: 'GET',
         url: '/users/search/',
         data: { start: start, end: end, q: nameKey },
+        headers: {Authorization: Cookies.get('token')},
         success: function (data) {
             $('#pagination-area').html(data);
+        },
+        error : function (err) {
+            console.log(err);
         }
     })
 })
@@ -92,10 +96,14 @@ $('body').on('click', '.page-btn', function() {
             start: start,
             end: end,
             q: nameKey,
-            page: page
+            page: page,
+            headers: {Authorization: Cookies.get('token')},
         },
         success: function (data) {
             $('#pagination-area').html(data);
+        },
+        error : function (err) {
+            console.log(err);
         }
     })
 })
@@ -136,10 +144,14 @@ $('body').on('click', '.sorter', function() {
             q: nameKey,
             page: currentPage,
             direction: direction,
-            target: target
+            target: target,
+            headers: {Authorization: Cookies.get('token')},
         },
         success: function (data) {
             $('#pagination-area').html(data);
+        },
+        error : function (err) {
+            console.log(err);
         }
     })
 })

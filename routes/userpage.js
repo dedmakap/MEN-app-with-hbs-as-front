@@ -5,7 +5,8 @@ var multer = require('multer');
 var path = require("path");
 var fs = require("fs");
 var Role = require('../database/role');
-var {checkAuth} = require('../middlewares/checkauth');
+var ajaxAuth = require('../middlewares/ajaxauth');
+var {checkAuth} = require('../middlewares/checkauth')
 var upload = multer({ dest: './public/images' });
 var {checkGuestRole} = require('../middlewares/checkauth')
 
@@ -41,7 +42,7 @@ router.get('/:id', checkAuth, checkGuestRole, function (req, res) {
 
 });
 
-router.post('/:id', checkAuth, upload.single('file'), function (req, res) {
+router.post('/:id', ajaxAuth, upload.single('file'), function (req, res) {
     if (!req.file) res.redirect('/users/userpage/' + req.params.id);
     User.findOneAndUpdate({ _id: req.params.id }, {avatar :req.file.filename }, function (err, data) {
         if (err) return console.log(err);
@@ -49,7 +50,7 @@ router.post('/:id', checkAuth, upload.single('file'), function (req, res) {
     })
 })
 
-router.put('/:id', checkAuth, function (req, res) {
+router.put('/:id', ajaxAuth, function (req, res) {
     if (req.body.roleId) {
         return Role.findOne({_id : req.body.roleId}, function (err, data) {
             if (err) {console.log(err);}

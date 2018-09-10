@@ -15,7 +15,8 @@ $('body').on('focus', '[contenteditable]', function() {
     $.ajax({
         method: 'PUT',
         url: `/users/userpage/${$('.data-table').data('userid')}`,
-        data: {key: target, data: textAfter} 
+        data: {key: target, data: textAfter},
+        headers: {Authorization: Cookies.get('token')}, 
     }) 
     
 });
@@ -25,8 +26,12 @@ $('#role-select').on('change', function () {
         method: 'PUT',
         url: `/users/userpage/${$('.data-table').data('userid')}`,
         data: {roleId: event.target.value},
+        headers: {Authorization: Cookies.get('token')},
         success: function (data) {
             $('#role-tab').text(data.name)
+        },
+        error: function (err) {
+            console.log(err);
         }
     });
 })
