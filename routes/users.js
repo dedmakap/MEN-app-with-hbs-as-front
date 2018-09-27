@@ -57,7 +57,7 @@ router.get('/', checkAuth, checkAdminRole, function (req, res, next) {
 
 async function search(query) {
   var formattedQuery = {};
-  var perPage = 9; //todo choose perpage
+  var perPage = Number(query.perPage) || 9; 
   var page = Number(query.page) || 1;
   var nameKey = new RegExp(query.name.trim(), 'i');
   formattedQuery.firstName = nameKey;
