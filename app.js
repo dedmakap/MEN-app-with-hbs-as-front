@@ -2,12 +2,11 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 var hbs = require('hbs');
 var fs = require('fs');
 var ifCondHelper = require('./views/helpers/if-cond')
 var paginationHelper = require('./views/helpers/pagination')
-
+var cors = require('cors');
 var userpageRouter = require('./routes/userpage');
 var usersRouter = require('./routes/users');
 var signinRouter = require('./routes/sign-in');
@@ -39,12 +38,11 @@ filenames.forEach(function (filename) {
 hbs.registerHelper('ifCond', ifCondHelper);
 hbs.registerHelper('pagination', paginationHelper);
 
-
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 connect();
 
@@ -54,7 +52,7 @@ app.use('/signin', signinRouter);
 app.use('/jumbo', jumboRouter);
 app.use('/register',regRouter);
 app.use('/signout',signoutRouter);
-app.use('/users/userpage/', userpageRouter);
+app.use('/users/userpage', userpageRouter);
 app.use('/users/search', usersSearchRouter);
 
 

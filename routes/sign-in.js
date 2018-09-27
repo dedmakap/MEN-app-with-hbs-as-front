@@ -43,4 +43,41 @@ router.post('/', (req, res) => {
     });
 
 })
+
+router.post('/api', (req, res)=>{
+    console.log(req.body)
+    var {email} = req.body.guest;
+    var {password} = req.body.guest;
+    User.findOne({ email })
+    .populate('role','name -_id')
+    .then(function (user) {
+        if (!user) {
+            return res.json({emailWrong: true})
+        }
+
+        bcrypt.compare(password, user.password, function (err, confirm) {
+            if (err) { return console.log(err); }
+            if (confirm) {
+                // Passwords match
+                var token = jwt.sign(user.email, 'secret');
+                return res.json({
+                    fullname: user.firstName,
+                    token,
+                    role: user.role.name,
+                    id: user._id,
+                })
+            } else {
+                // Passwords don't match
+                return res.json({
+                    passWrong: true,
+                })
+            }
+        });
+    })
+    .catch(function (err) {
+        return console.log(err);
+    })
+})
+
+
 module.exports = router;

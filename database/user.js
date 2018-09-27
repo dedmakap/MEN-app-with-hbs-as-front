@@ -20,6 +20,19 @@ var userScheme = new Schema({
     age : {type : Number}
 });
 
+userScheme.methods.toResponse = function() {
+    console.log(this);
+    return {
+        _id: this._id,
+        firstName: this.firstName,
+        email: this.email,
+        userName: this.userName,
+        role: this.role,
+        age: this.age,
+        avatar: this.avatar,
+    }
+}
+
 userScheme.pre('save', function (next) {
     
     if (!this.role) {
