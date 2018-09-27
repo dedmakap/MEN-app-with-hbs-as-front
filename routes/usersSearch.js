@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../database/user');
 var ajaxAuth = require('../middlewares/ajaxauth');
+var appRoot = require('app-root-path');
+var logger = require(`${appRoot}/utils/logger`);
 
 
 function search(req, res) {
@@ -60,7 +62,8 @@ function search(req, res) {
       })
     })
     .catch((err) => {
-      console.log(err);
+      logger.error(err.message);
+      return res.status(500).json({error: true, message: err.message});
     })
 
 }

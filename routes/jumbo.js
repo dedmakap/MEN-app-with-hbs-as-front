@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
-var User = require('../database/user')
+var User = require('../database/user');
+var appRoot = require('app-root-path');
+var logger = require(`${appRoot}/utils/logger`);
 
 router.get('/', (req, res) => {
     if (!req.cookies.token) {
@@ -14,7 +16,10 @@ router.get('/', (req, res) => {
     User.findOne({ email })
         .populate('role', 'name')
         .exec(function (err, data) {
-            if (err) return console.log(err);
+            if (err) {
+                logger.error(err.message);
+                return res.status(500).json({error: true, message: err.message});
+              }
             if (!data) {
                 return res.render('jumbo', {
                     title: 'MyApp',

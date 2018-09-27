@@ -16,7 +16,6 @@ function checkAuth(req, res, next) {
 }
 
 function checkAuthReact(req, res, next) {
-  console.log(req.headers);
   if (!req.headers.authorization) {
     return res.status(401).end();
   }

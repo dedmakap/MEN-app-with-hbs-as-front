@@ -7,7 +7,8 @@ var { checkAdminRole,
       checkAdminRoleReact,
 } = require('../middlewares/checkauth')
 var Role = require('../database/role');
-var {logger} = require('../utils/logger');
+var appRoot = require('app-root-path');
+var logger = require(`${appRoot}/utils/logger`);
 
 
 function generateAgeRange() {
@@ -32,10 +33,15 @@ router.get('/', checkAuth, checkAdminRole, function (req, res, next) {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec(function (err, userslist) {
-      if (err) return console.log(err);
+      if (err) {
+        logger.error(err.message);
+        return res.status(500).json({error: true, message: err.message});
+      }
       User.count().exec(function (err, count) {
-        if (err) return console.log(err);
-
+        if (err) {
+          logger.error(err.message);
+          return res.status(500).json({error: true, message: err.message});
+        }
         return res.render('users', {
           ageRange: generateAgeRange(),
           people: userslist,
@@ -69,8 +75,6 @@ async function search(query) {
     result.current = page;
     result.pages = Math.ceil(count / perPage);
     return result;
-  
-
 }
 
 async function searchOne(id) {
@@ -80,7 +84,8 @@ async function searchOne(id) {
       .populate('role', 'name -_id');
     return user;
   } catch (err) {
-    console.log(err)
+    logger.error(err.message);
+    return res.status(500).json({error: true, message: err.message});
   }
 
 }
@@ -94,7 +99,8 @@ router.get(
       const searchResult = await searchOne(id);
       return res.json(searchResult);
     } catch (err) {
-    console.log(err);
+      logger.error(err.message);
+      return res.status(500).json({error: true, message: err.message});
     }
   }
 )
@@ -108,7 +114,6 @@ router.put(
     var userId = req.params.id;
     var newValue = req.body.updateValue
     if (fieldId === 'role') {
-      console.log(fieldId, userId, newValue)
       return Role.findOne({_id: newValue})
         .then((role) => {
           User.findOneAndUpdate(
@@ -119,7 +124,10 @@ router.put(
           .populate('role', 'name -_id')
           .exec(
             function (err, user) {
-              if (err) console.log(err);
+              if (err) {
+                logger.error(err.message);
+                return res.status(500).json({error: true, message: err.message});
+              }
               return res.json(user.toResponse());
             })
         })
@@ -134,7 +142,10 @@ router.put(
       .populate('role', 'name -_id')
       .exec(
       function (err, user) {
-        if (err) console.log(err);
+        if (err) {
+          logger.error(err.message);
+          return res.status(500).json({error: true, message: err.message});
+        }
         return res.json(user.toResponse());
       })
     
@@ -147,14 +158,14 @@ router.get(
   checkAuthReact, 
   checkAdminRoleReact, 
   async function (req, res, next) {
-    console.log(logger)
     var query = req.query;
     try {
       query.age = JSON.parse(req.query.age);
       const searchResult = await search(query);
       return res.json(searchResult);
     } catch (err) {
-      console.log(err); //todo Make error object and send it to front
+      logger.error(err.message); 
+      return res.status(500).json({error: true, message: err.message});
     }  
   }
 )

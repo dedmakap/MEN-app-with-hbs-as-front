@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var hbs = require('hbs');
 var fs = require('fs');
+var morgan = require('morgan');
+var logger = require('./utils/logger');
 var ifCondHelper = require('./views/helpers/if-cond')
 var paginationHelper = require('./views/helpers/pagination')
 var cors = require('cors');
@@ -38,6 +40,7 @@ filenames.forEach(function (filename) {
 hbs.registerHelper('ifCond', ifCondHelper);
 hbs.registerHelper('pagination', paginationHelper);
 
+app.use(morgan('combined', {stream: logger.stream}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -66,6 +69,8 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip} \n`);
 
   // render the error page
   res.status(err.status || 500);

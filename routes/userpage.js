@@ -12,6 +12,8 @@ var {checkGuestRole,
     checkAuthReact,
     checkAdminRoleReact,
 } = require('../middlewares/checkauth');
+var appRoot = require('app-root-path');
+var logger = require(`${appRoot}/utils/logger`);
 
 
 
@@ -23,7 +25,10 @@ router.get('/:id', checkAuth, checkGuestRole, function (req, res) {
     User.findOne({ _id: id })
         .populate('role', 'name -_id')
         .exec(function (err, owner) {
-        if (err) return console.log(err);
+        if (err) {
+            logger.error(err.message);
+            return res.status(500).json({error: true, message: err.message});
+          }
         if (fs.existsSync(avaPath + owner.avatar)) {
             avaFile = owner.avatar;
         }
@@ -45,13 +50,6 @@ router.get('/:id', checkAuth, checkGuestRole, function (req, res) {
 
 });
 
-// router.post('/:id', ajaxAuth, upload.single('file'), function (req, res) {
-//     if (!req.file) res.redirect('/users/userpage/' + req.params.id);
-//     User.findOneAndUpdate({ _id: req.params.id }, {avatar :req.file.filename }, function (err, data) {
-//         if (err) return console.log(err);
-//         res.redirect('/users/userpage/' + req.params.id);
-//     })
-// })
 
 router.post('/api/:id', checkAuthReact, checkAdminRoleReact, upload.single('file'), function (req, res) {
     console.log('wow so cool');
@@ -64,7 +62,10 @@ router.post('/api/:id', checkAuthReact, checkAdminRoleReact, upload.single('file
         .populate('role', 'name -_id')
         .exec(
          function (err, data) {
-        if (err) return console.log(err);
+        if (err) {
+            logger.error(err.message);
+            return res.status(500).json({error: true, message: err.message});
+          }
         
         return res.json(data.toResponse());
         })
@@ -73,10 +74,16 @@ router.post('/api/:id', checkAuthReact, checkAdminRoleReact, upload.single('file
 router.put('/:id', ajaxAuth, function (req, res) {
     if (req.body.roleId) {
         return Role.findOne({_id : req.body.roleId}, function (err, data) {
-            if (err) {console.log(err);}
+            if (err) {
+                logger.error(err.message);
+                return res.status(500).json({error: true, message: err.message});
+              }
             if (!data) return res.end()
             User.findOneAndUpdate({_id: req.params['id']}, {role: data._id}, function (err) {
-                if (err) return console.log(err);
+                if (err) {
+                    logger.error(err.message);
+                    return res.status(500).json({error: true, message: err.message});
+                  }
                 return res.json({
                     name: data.name
                 });
@@ -100,7 +107,10 @@ router.put('/:id', ajaxAuth, function (req, res) {
     }
     var data = req.body.data;
     User.findOneAndUpdate({ _id: req.params['id'] }, { [key]: data }, function (err, user) {
-        if (err) console.log(err);
+        if (err) {
+            logger.error(err.message);
+            return res.status(500).json({error: true, message: err.message});
+          }
         return res.end();
     })
 })

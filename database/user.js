@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Role = require('./role');
+var appRoot = require('app-root-path');
+var logger = require(`${appRoot}/utils/logger`);
+
 
 var userScheme = new Schema({
     firstName : String,
@@ -21,7 +24,6 @@ var userScheme = new Schema({
 });
 
 userScheme.methods.toResponse = function() {
-    console.log(this);
     return {
         _id: this._id,
         firstName: this.firstName,
@@ -37,7 +39,10 @@ userScheme.pre('save', function (next) {
     
     if (!this.role) {
         Role.findOne({name:'user'}, (err, data) => {
-            if (err) return console.log(err);
+            if (err) {
+                logger.error(err.message);
+                return res.status(500).json({error: true, message: err.message});
+            }
             this.role = data._id;
             next();
     })

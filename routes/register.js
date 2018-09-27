@@ -3,6 +3,8 @@ var router = express.Router();
 var User = require('../database/user');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+var appRoot = require('app-root-path');
+var logger = require(`${appRoot}/utils/logger`);
 
 router.get('/', (req, res) => {
   res.render('register', { title: 'Registration page', css: ['register.css'] });
@@ -10,7 +12,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   bcrypt.hash(req.body.password, 10, function (err, hash) {
-    if (err) { console.log(err); }
+    if (err) {
+      logger.error(err.message);
+      return res.status(500).json({error: true, message: err.message});
+    }
     var user = new User({
       firstName: req.body.name,
       email: req.body.email,
@@ -32,7 +37,10 @@ router.post('/', (req, res) => {
 
 router.post('/api', (req, res) => {
   bcrypt.hash(req.body.user.password, 10, function (err, hash) {
-    if (err) { return console.log(err); }
+    if (err) {
+      logger.error(err.message);
+      return res.status(500).json({error: true, message: err.message});
+    }
     var user = new User({
       firstName: req.body.user.fullname,
       email: req.body.user.email,
@@ -60,7 +68,8 @@ router.post('/api', (req, res) => {
         })
       })
       .catch(err => {
-        return res.send(err)
+        logger.error(err.message);
+        return res.status(500).json({error: true, message: err.message});
       })
   })
 })
