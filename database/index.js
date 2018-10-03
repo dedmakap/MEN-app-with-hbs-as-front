@@ -1,10 +1,18 @@
-var mongoose = require('mongoose');
+var Sequelize = require('sequelize');
+
+var sequelize = new Sequelize('fusion', 'postgres', 'postgres', {
+  host: 'localhost',
+  port: 5432,
+  dialect: 'postgres',
+  operatorsAliases: false,
+})
 
 
-function connectToDb() {
-    mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true })
-}
-
-module.exports = {
-    connectToDb,
-}
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
