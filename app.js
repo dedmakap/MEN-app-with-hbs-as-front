@@ -47,7 +47,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-connect();
+// connect(); connection to mongodb instance
 
 app.use('/', jumboRouter);
 app.use('/users', usersRouter);

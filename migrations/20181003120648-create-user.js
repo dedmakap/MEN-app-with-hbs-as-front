@@ -12,9 +12,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
       },
       username: {
+        type: Sequelize.STRING
+      },
+      password: {
         type: Sequelize.STRING
       },
       age: {
@@ -23,9 +27,6 @@ module.exports = {
       avatar: {
         type: Sequelize.STRING
       },
-      role_id: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -33,7 +34,16 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      roleID: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Roles',
+          key:'id',
+          as: 'roleID',
+        },
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
