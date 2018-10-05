@@ -7,6 +7,7 @@ var appRoot = require('app-root-path');
 var logger = require(`${appRoot}/utils/logger`);
 var db = require('../models/index');
 
+ 
 
 
 router.get('/', (req, res) => {
@@ -59,9 +60,7 @@ router.post('/api', (req, res) => {
     var { email } = req.body.guest;
     db.User.findOne({
       where: { email },
-      include: [
-        'Role'
-      ]
+      include: ['Role']
     })
       .then(user => {
         var token = jwt.sign(user.email, 'secret');

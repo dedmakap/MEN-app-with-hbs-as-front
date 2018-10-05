@@ -1,5 +1,6 @@
 var User = require('../database/user');
 var jwt = require('jsonwebtoken');
+var UserSQL = require('../models/index').User;
 
 function checkAuth(req, res, next) {
   if (!req.cookies.token) {
@@ -22,16 +23,24 @@ function checkAuthReact(req, res, next) {
   var bearerToken = req.headers.authorization.split(' ');
   var token = bearerToken[1];
   var email = jwt.verify(token, 'secret');
-  User.findOne({ email })
-    .populate('role', 'name -_id')
-    .then(function (guest) {
+  UserSQL.findOne({
+    where: {email},
+    include: ['Role']
+  })
+    .then(guest => {
       req.guest = guest;
       return next();
     })
+  // User.findOne({ email })
+  //   .populate('role', 'name -_id')
+  //   .then(function (guest) {
+  //     req.guest = guest;
+  //     return next();
+  //   })
 }
 
 function checkAdminRoleReact(req, res, next) {
-  if (req.guest.role.name === 'admin' || req.guest._id == req.params.id) {
+  if (req.guest.Role.title === 'admin' || req.guest.id == req.params.id) {
     return next();
   }
   return res.status(403).end();

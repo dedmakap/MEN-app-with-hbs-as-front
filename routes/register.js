@@ -37,7 +37,6 @@ router.post('/', (req, res) => {
 })
 
 router.post('/api', (req, res) => {
-  // console.log(req.body.user);
   bcrypt.hash(req.body.user.password, 10, async (err, hash) => {
     try {
       if (err) {
@@ -62,8 +61,6 @@ router.post('/api', (req, res) => {
         role: role.dataValues.title,
         id: newUser.id,
       }
-
-      console.log(resObj);
       return res.json(resObj);
 
       // res.json(newUser)
@@ -99,7 +96,6 @@ router.post('/api', (req, res) => {
         emailExists: true,
       })
       if (err.name === 'SequelizeValidationError')
-      console.log('ya tut');
         return res.json({
           emailError: true,
         })
