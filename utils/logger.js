@@ -2,6 +2,7 @@ var winston = require('winston');
 var appRoot = require('app-root-path');
 var Transport = require('winston-transport');
 var Log = require('../database/log');
+var LogSQL = require('../models/index').Log;
 
 var { printf, combine, timestamp, } = winston.format;
 
@@ -15,12 +16,10 @@ class LogToDatabase extends Transport {
   }
 
   log(info, callback) {
-    var log = new Log({
-      timestamp: new Date(),
-      level: info.level,
-      message: info.message,
-    })
-  log.save().then(callback())
+  LogSQL.create({
+    level: info.level,
+    message: info.message,
+  }).then(callback())
   }
 }
 

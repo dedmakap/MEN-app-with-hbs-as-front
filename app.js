@@ -19,7 +19,7 @@ var usersSearchRouter = require('./routes/usersSearch');
 
 
 var app = express();
-var connect = require('./database/index').connectToDb;
+// var connect = require('./database/index').connectToDb;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

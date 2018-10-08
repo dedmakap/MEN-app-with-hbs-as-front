@@ -68,40 +68,27 @@ async function search(query) {
   formattedQuery.where.age = { [Op.between]: [query.age.min, query.age.max] };
   formattedQuery.offset = ((perPage * page) - perPage);
   formattedQuery.limit = perPage;
-  formattedQuery.include = [{model: db.Role}];
-  formattedQuery.attributes = {exclude: ['password']};
+  formattedQuery.include = [{ model: db.Role }];
+  formattedQuery.attributes = { exclude: ['password'] };
   formattedQuery.order = [[query.sortTarget, query.sortDirection]];
-  
+
   return UserSQL.findAndCountAll(formattedQuery)
-  .then(users => {
-    let result = {};
-    result.users = users.rows;
-    result.current = page;
-    result.pages = Math.ceil(users.count/ perPage)
+    .then(users => {
+      let result = {};
+      result.users = users.rows;
+      result.current = page;
+      result.pages = Math.ceil(users.count / perPage)
+      return result;
+    })
 
-    // console.log(users);
-    return result;
-  })
-  
-  // var result = {};
-  // const users = await User.find(formattedQuery)
-  //   .skip((perPage * page) - perPage)
-  //   .limit(perPage)
-  //   .sort({[query.sortTarget]: query.sortDirection})
-  //   .populate('role', 'name -_id');
-
-  // const count = await User.count(formattedQuery);
-  // result.users = users;
-  // result.current = page;
-  // result.pages = Math.ceil(count / perPage);
-  // return result;
+ 
 }
 
 async function searchOne(id) {
-  var query = { 
+  var query = {
     where: { 'id': id },
-    include: [{model: db.Role}],
-    attributes: {exclude: ['password']},
+    include: [{ model: db.Role }],
+    attributes: { exclude: ['password'] },
   };
   try {
     var user = await UserSQL.findOne(query)
@@ -136,44 +123,36 @@ router.put(
     var fieldId = req.body.colId;
     var userId = req.params.id;
     var newValue = req.body.updateValue
-    if (fieldId === 'role') {
-      return Role.findOne({ _id: newValue })
-        .then((role) => {
-          User.findOneAndUpdate(
-            { _id: userId },
-            { role: role._id },
-            { new: true }
-          )
-            .populate('role', 'name -_id')
-            .exec(
-              function (err, user) {
-                if (err) {
-                  logger.error(err.message);
-                  return res.status(500).json({ error: true, message: err.message });
-                }
-                return res.json(user.toResponse());
-              })
-        })
-      return res.end();
-
-    }
-    User.findOneAndUpdate(
-      { _id: userId },
-      { [fieldId]: newValue },
-      { new: true },
-    )
-      .populate('role', 'name -_id')
-      .exec(
-        function (err, user) {
-          if (err) {
+    if (fieldId === 'roleID') {
+      let query = {
+        where: { 'id': req.params.id },
+        include: [{ model: db.Role }],
+        attributes: { exclude: ['password'] },
+      }
+      return UserSQL.findOne(query)
+        .then(user => user.update({ roleID: newValue }, { returning: true }))
+        .then(() => UserSQL.findOne(query))
+        .then((newUser) => res.json(newUser))
+        .catch(err => {
             logger.error(err.message);
             return res.status(500).json({ error: true, message: err.message });
-          }
-          return res.json(user.toResponse());
-        })
-
-
-
+          });
+    }
+    let query = {
+      where: { 'id': req.params.id },
+      include: [{ model: db.Role }],
+      attributes: { exclude: ['password'] },
+    }
+    return UserSQL.findOne(query)
+      .then(user => {
+        user[fieldId] = newValue;
+        user.save()
+          .then(() =>  res.json(user))
+          .catch(err => {
+            logger.error(err.message);
+            return res.status(500).json({ error: true, message: err.message });
+          });
+      })
   })
 
 router.get(
@@ -181,7 +160,7 @@ router.get(
   checkAuthReact,
   checkAdminRoleReact,
   async function (req, res, next) {
-    var query = req.query;
+    const { query } = req;
     try {
       query.age = JSON.parse(req.query.age);
       const result = await search(query);
