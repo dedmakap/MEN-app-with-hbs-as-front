@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('myapp:server');
 var http = require('http');
+var socketIO = require('socket.io');
+let likes = 1;
 
 /**
  * Get port from environment and store in Express.
@@ -21,6 +23,23 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+// This creates our socket using the instance of the server
+const io = socketIO(server)
+
+io.on('connection', socket => {
+  console.log('User connected')
+  
+
+  socket.on('addlike', () => {
+    likes++;
+    io.emit('addlike', likes);
+  })
+  
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
+
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -28,6 +47,10 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+
+
+
 
 /**
  * Normalize a port into a number, string, or false.

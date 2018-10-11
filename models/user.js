@@ -25,6 +25,18 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'roleID',
       onDelete: 'CASCADE',
     });
+    User.hasMany(models.Post, {
+      foreignKey: 'authorID',
+      //  as: 'authorID',
+    });
+    // User.belongsToMany(models.Post, {
+    //   through: 'Likes',
+    //   as: 'posts',
+    //   foreignKey: 'userID'
+    // })
+    User.hasMany(models.Like, {
+      foreignKey: 'userID'
+    })
   };
   return User;
 };

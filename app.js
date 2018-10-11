@@ -18,8 +18,9 @@ var signoutRouter = require('./routes/signout');
 var usersSearchRouter = require('./routes/usersSearch');
 
 
+
 var app = express();
-// var connect = require('./database/index').connectToDb;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -47,7 +48,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-// connect(); connection to mongodb instance
 
 app.use('/', jumboRouter);
 app.use('/users', usersRouter);
@@ -57,6 +57,9 @@ app.use('/register',regRouter);
 app.use('/signout',signoutRouter);
 app.use('/users/userpage', userpageRouter);
 app.use('/users/search', usersSearchRouter);
+
+
+
 
 
 // catch 404 and forward to error handler

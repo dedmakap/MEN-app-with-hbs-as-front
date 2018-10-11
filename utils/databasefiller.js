@@ -1,8 +1,8 @@
-var User = require('../../database/user');
-var mongoose = require('mongoose');
+// var User = require('../../database/user');
+// var mongoose = require('mongoose');
 var list = [];
 var bcrypt = require('bcrypt');
-const db = require('../../models');
+const db = require('../models');
 
 function randomInteger(min, max) {
     var rand = min + Math.random() * (max + 1 - min);
