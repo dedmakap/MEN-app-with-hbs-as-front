@@ -8,7 +8,6 @@ var app = require('../app');
 var debug = require('debug')('myapp:server');
 var http = require('http');
 var socketIO = require('socket.io');
-let likes = 1;
 
 /**
  * Get port from environment and store in Express.
@@ -30,9 +29,9 @@ io.on('connection', socket => {
   console.log('User connected')
   
 
-  socket.on('addlike', () => {
-    likes++;
-    io.emit('addlike', likes);
+  socket.on('addlike', (likes, postID) => {
+    console.log('emit srabotal', likes);
+    io.emit('addlike', likes, postID);
   })
   
   socket.on('disconnect', () => {

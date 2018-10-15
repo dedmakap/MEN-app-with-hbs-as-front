@@ -115,6 +115,33 @@ router.get(
   }
 )
 
+router.get(
+  '/api/posts/:id',
+  checkAuthReact, checkAdminRoleReact,
+  async (req,res,next) => {
+    var id = req.params.id;
+    try {
+      const query = {
+        where: {
+          'authorID': id
+        },
+        include: [
+          { model: db.User, attributes: { exclude: 'password' } },
+          { model: db.Like, include: [{ model: db.User }] },
+        ],
+        order: [['createdAt', 'desc']]
+      }
+      console.log(query)
+      const posts = await db.Post.findAll(query)
+      return res.json(posts).status(200);
+    }
+    catch (err) {
+      logger.error(err.message);
+      return res.status(500).json({ error: true, message: err.message });
+    }
+  }
+)
+
 router.put(
   '/api/:id',
   checkAuthReact,
